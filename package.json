@@ -1,0 +1,21 @@
+{
+	"name": "memor",
+	"version": "0.1.0",
+	"description": "More memoization",
+	"main": "./dist/index.cjs.js",
+	"module": "./dist/index.es.js",
+	"files": ["dist"],
+	"engines": {
+		"node": ">=8"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Conduitry/memor.git"
+	},
+	"author": "Conduitry",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Conduitry/memor/issues"
+	},
+	"homepage": "https://cndtr.io/memor/"
+}
