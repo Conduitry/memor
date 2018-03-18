@@ -1,3 +1,3 @@
 import { data } from './memoize.js'
 
-export default func => data.WeakMap && data.WeakMap.delete(func)
+export default func => data.WeakMap && data.WeakMap.delete(func.original || func)

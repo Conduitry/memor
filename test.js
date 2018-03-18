@@ -99,3 +99,9 @@ assert.equal(call.original, func)
 	memor.clear(func)
 	assert.notEqual(call(), r)
 }
+
+{
+	let r = call()
+	memor.clear(call)
+	assert.notEqual(call(), r)
+}
