@@ -91,3 +91,5 @@ assert.notEqual(call(), memor.memoize(() => ++calledCount)())
 assert.equal(call(), memor.memoize(func)())
 
 assert.notEqual(call(Object.create(null)), call(Object.create(null)))
+
+assert.equal(call.original, func)
