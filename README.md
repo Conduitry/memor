@@ -22,9 +22,11 @@ memoizedFunction(/* ... */)
 
 Keying of primitives, arrays, regexes, dates, and buffers works according to their values. Any additional custom properties added to the objects will *not* be considered as part of the key. (More specifically, arrays are keyed according to their length and their elements, regexes and buffers are keyed according to their `.toString()`s, and dates are keyed according to their `.getTime()`s.)
 
-Keying of POJOs works according to their (own) enumerable and non-enumerable property names and values, without regard to order. Symbolic keys and their values are also part of the keying, but these *are* sensitive to order, due to the lack of a canonical ordering on symbols.
+Keying of POJOs works according to their enumerable and non-enumerable property names and symbols and their values, without regard to the order they appear.
 
 Other objects (those without a prototype of `Object.prototype`) are simply keyed according to their identity (i.e., `===`).
+
+Take a look at the unit tests in [`test.js`](test.js) for some specific examples of what will and will not get keyed the same way.
 
 ## Misc
 
