@@ -10,6 +10,8 @@ Memoization, but good. Works with functions of an arbitrary and/or variable numb
 
 ## Usage
 
+### `memor.memoize`
+
 ```javascript
 import { memoize } from 'memor'
 
@@ -28,6 +30,35 @@ Other objects (those without a prototype of `Object.prototype`) are simply keyed
 
 Take a look at the unit tests in [`test.js`](test.js) for some specific examples of what will and will not get keyed the same way.
 
+### `memor.clear`
+
+```javascript
+import { memoize, clear } from 'memor'
+
+const memoizedFunction = memoize(originalFunction)
+
+memoizedFunction(/* ... */)
+
+clear(originalFunction)
+// or
+clear(memoizedFunction)
+
+memoizedFunction(/* ... */)
+```
+
+All memoized values for a function can be cleared by calling `clear` on the original function or on the memoized function. These do exactly the same thing: Since all memoized copies of the same function share the same cache, clearing one clears all of them.
+
+### `memoizedFunction.original`
+
+```javascript
+import { memoize } from 'memor'
+
+const memoizedFunction = memoize(originalFunction)
+
+memoizedFunction.original === originalFunction // true
+```
+
+The original function is available as the `.original` property on the memoized function.
 ## Misc
 
 - [changelog](CHANGELOG.md#readme)
