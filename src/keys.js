@@ -8,23 +8,23 @@ let array
 
 let recurse = obj => {
 	let temp
-	switch (typeof obj === 'object' && obj !== null && Object.getPrototypeOf(obj).constructor) {
-		case Array:
+	switch (typeof obj === 'object' && obj !== null && Object.getPrototypeOf(obj)) {
+		case Array.prototype:
 			array.push(ARRAY, obj.length)
 			obj.forEach(recurse)
 			break
-		case Object:
+		case Object.prototype:
 			temp = Object.getOwnPropertyNames(obj).sort()
 			array.push(OBJECT, temp.length, ...temp)
 			temp.forEach(key => recurse(obj[key]))
 			break
-		case RegExp:
+		case RegExp.prototype:
 			array.push(REGEXP, obj.toString())
 			break
-		case Date:
+		case Date.prototype:
 			array.push(DATE, obj.getTime())
 			break
-		case Buffer:
+		case Buffer.prototype:
 			array.push(BUFFER, obj.toString('binary'))
 			break
 		default:
