@@ -33,6 +33,13 @@ assert.notEqual(call([[0, 0], [0]]), call([[0], [0, 0]]))
 
 assert.equal(call({ a: 0, b: 1 }), call({ b: 1, a: 0 }))
 
+{
+	let s = Symbol()
+	assert.notEqual(call({ a: 0, b: 1 }), call({ [s]: 2, b: 1, a: 0 }))
+	assert.equal(call({ a: 0, b: 1, [s]: 2 }), call({ [s]: 2, b: 1, a: 0 }))
+	assert.notEqual(call({ a: 0, b: 1, [s]: 2 }), call({ [s]: 3, b: 1, a: 0 }))
+}
+
 assert.equal(call(new Date(2000, 0, 1)), call(new Date(2000, 0, 1, 0, 0, 0)))
 
 assert.equal(call([new Date(2000, 0, 1)]), call([new Date(2000, 0, 1, 0, 0, 0)]))

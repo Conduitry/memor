@@ -14,7 +14,7 @@ let recurse = obj => {
 			obj.forEach(recurse)
 			break
 		case Object.prototype:
-			temp = Object.getOwnPropertyNames(obj).sort()
+			temp = [...Object.getOwnPropertyNames(obj).sort(), ...Object.getOwnPropertySymbols(obj)]
 			array.push(OBJECT, temp.length, ...temp)
 			temp.forEach(key => recurse(obj[key]))
 			break
