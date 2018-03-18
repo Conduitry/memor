@@ -19,13 +19,13 @@ let recurse = obj => {
 				temp.forEach(key => recurse(obj[key]))
 				return
 			case RegExp.prototype:
-				array.push(REGEXP, obj.source, obj.flags)
+				array.push(REGEXP, obj.toString())
 				return
 			case Date.prototype:
 				array.push(DATE, obj.getTime())
 				return
 			case Buffer.prototype:
-				array.push(BUFFER, obj.toString('base64'))
+				array.push(BUFFER, obj.toString('binary'))
 				return
 		}
 	}
