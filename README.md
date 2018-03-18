@@ -6,7 +6,7 @@ Memoization, but good. Works with functions of an arbitrary and/or variable numb
 
 ## Requirements
 
-- [Node.js](https://nodejs.org/) 4+
+- [Node.js](https://nodejs.org/) 6+
 
 ## Usage
 
