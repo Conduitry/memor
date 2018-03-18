@@ -7,14 +7,16 @@ let BUFFER = Symbol()
 let array
 
 let recurse = obj => {
+	let temp
 	if (typeof obj === 'object' && obj !== null) {
 		switch (Object.getPrototypeOf(obj)) {
 			case Array.prototype:
 				array.push(ARRAY, obj.length), obj.forEach(recurse)
 				return
 			case Object.prototype:
-				array.push(OBJECT, Object.keys(obj).length, ...Object.keys(obj))
-				Object.values(obj).forEach(recurse)
+				temp = Object.getOwnPropertyNames(obj).sort()
+				array.push(OBJECT, temp.length, ...temp)
+				temp.forEach(key => recurse(obj[key]))
 				return
 			case RegExp.prototype:
 				array.push(REGEXP, obj.source, obj.flags)
