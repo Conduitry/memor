@@ -1,3 +1,8 @@
+# v0.1.4
+
+- Add function to clear all cached values for a memoized function
+- Expose original function as `.original` on memoized function
+
 # v0.1.3
 
 - Normalize order of property symbol keys in POJOs
