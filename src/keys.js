@@ -1,4 +1,5 @@
 let ARRAY = Symbol()
+let HOLE = Symbol()
 let OBJECT = Symbol()
 let REGEXP = Symbol()
 let DATE = Symbol()
@@ -11,7 +12,7 @@ let recurse = obj => {
 	switch (typeof obj === 'object' && obj !== null && Object.getPrototypeOf(obj)) {
 		case Array.prototype:
 			array.push(ARRAY, obj.length)
-			obj.forEach(recurse)
+			for (let i = 0; i < obj.length; i++) i in obj ? recurse(obj[i]) : array.push(HOLE)
 			break
 		case Object.prototype:
 			temp = [...Object.getOwnPropertyNames(obj).sort(), ...Object.getOwnPropertySymbols(obj)]
