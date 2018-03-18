@@ -1,6 +1,6 @@
 import keys from './keys.js'
 
-let data = {}
+export let data = {}
 
 export default func => {
 	let memoized = (...args) => {
