@@ -1,3 +1,5 @@
+import sortSymbols from './sortSymbols.js'
+
 let ARRAY = Symbol()
 let HOLE = Symbol()
 let OBJECT = Symbol()
@@ -14,7 +16,10 @@ let recurse = obj => {
 			for (let i = 0; i < obj.length; i++) i in obj ? recurse(obj[i]) : array.push(HOLE)
 			break
 		case Object.prototype: {
-			let temp = [...Object.getOwnPropertyNames(obj).sort(), ...Object.getOwnPropertySymbols(obj)]
+			let temp = [
+				...Object.getOwnPropertyNames(obj).sort(),
+				...sortSymbols(Object.getOwnPropertySymbols(obj)),
+			]
 			array.push(OBJECT, temp.length, ...temp)
 			temp.forEach(key => recurse(obj[key]))
 			break
