@@ -2,6 +2,7 @@
 	"name": "memor",
 	"version": "0.1.0",
 	"description": "More memoization",
+	"keywords": ["memoize", "memoization"],
 	"main": "./dist/index.cjs.js",
 	"module": "./dist/index.es.js",
 	"files": ["dist"],
