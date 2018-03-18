@@ -38,8 +38,8 @@ let recurse = obj => {
 	}
 }
 
-export default obj => {
+export default args => {
 	array = []
-	recurse(obj)
+	args.forEach(recurse)
 	return array
 }
