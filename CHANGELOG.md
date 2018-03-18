@@ -1,3 +1,8 @@
+# v0.1.3
+
+- Normalize order of property symbol keys in POJOs
+- Fix keying of sparse arrays
+
 # v0.1.2
 
 - Key POJOs according to symbolic properties as well, just without order normalization
