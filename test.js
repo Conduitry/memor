@@ -15,7 +15,11 @@ assert.equal(call([]), call([]))
 	assert.equal(call(a), call([0]))
 }
 
+assert.equal(call([1, , 2]), call([1, , 2])) // eslint-disable-line no-sparse-arrays
+
 assert.notEqual(call([1, , 2]), call([1, 2, ,])) // eslint-disable-line no-sparse-arrays
+
+assert.notEqual(call([1, , 2]), call([1, undefined, 2])) // eslint-disable-line no-sparse-arrays
 
 assert.equal(call({}), call({}))
 
