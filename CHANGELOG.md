@@ -1,3 +1,8 @@
+# v0.2.0
+
+- Add ability to extend memoization behavior with `memor.add` and `memor.addCustom`
+- Support keying on prototype-less objects
+
 # v0.1.4
 
 - Add function to clear all cached values for a memoized function

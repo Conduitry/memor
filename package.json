@@ -1,6 +1,6 @@
 {
 	"name": "memor",
-	"version": "0.1.4",
+	"version": "0.2.0",
 	"description": "More memoization",
 	"keywords": ["memoize", "memoization"],
 	"main": "./dist/index.cjs.js",
