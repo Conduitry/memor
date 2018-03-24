@@ -22,11 +22,11 @@ memoizedFunction(/* ... */)
 
 `originalFunction` can accept any number or a variable number of arguments. Re-memoizing the same function (i.e., calling `memoize(originalFunction)` elsewhere later) will share the cached values.
 
-Keying of primitives, arrays, regexes, dates, and buffers works according to their values. Any additional custom properties added to the objects will *not* be considered as part of the key. (More specifically, arrays are keyed according to their length and their elements, regexes and buffers are keyed according to their `.toString()`s, and dates are keyed according to their `.getTime()`s.)
+Keying of primitives, regexes, dates, and buffers works according to their values. Any additional custom properties added to the objects will *not* be considered as part of the key. More specifically, regexes and buffers are keyed according to their `.toString()`, and dates are keyed according to their `.getTime()`.
 
-Keying of POJOs works according to their enumerable and non-enumerable property names and symbols and their values, without regard to the order they appear.
+Keying of arrays (prototype `Array.prototype`), POJOs (prototype `Object.prototype`), and prototype-less objects (prototype `null`) works according to their enumerable and non-enumerable property names and symbols and their values, without regard to the order they appear.
 
-Other objects (those without a prototype of `Object.prototype`) are simply keyed according to their identity (i.e., `===`).
+Other objects are by default simply keyed according to their identity (i.e., `===`), although this can be extended (see `memor.add`, below).
 
 Take a look at the unit tests in [`test.js`](test.js) for some specific examples of what will and will not get keyed the same way.
 
@@ -47,6 +47,28 @@ memoizedFunction(/* ... */)
 ```
 
 All memoized values for a function can be cleared by calling `clear` on the original function or on the memoized function. These do exactly the same thing: Since all memoized copies of the same function share the same cache, clearing one clears all of them.
+
+### `memor.add`
+
+```javascript
+import { add } from 'memor'
+
+add(Class1, Class2, ...)
+```
+
+This makes keying of instances of `Class1`, `Class2`, etc. work the same as arrays, POJOs, and prototype-less objects. That is, keyed according to their prototype and their enumerable and non-enumerable property names and symbols and their values, without regard to the order they appear. Note that this only sets up handling for _direct_ instances of `Class1`, etc. (i.e., those objects whose prototype is `Class1.prototype`, etc.).
+
+### `memor.addCustom`
+
+```javascript
+import { addCustom } from 'memor'
+
+addCustom(Class1, Class2, ..., (obj, push, recurse) => { /* ... */ })
+```
+
+This allows more customization of how instances of `Class1`, `Class2`, etc. are keyed. In general, keying objects involves converting them into a linear array of primitives and objects to use as `Map`/`WeakMap` keys. Two objects will be keyed together if and only if they are converted to arrays of the same (`===`) primitives and objects.
+
+A custom handler is implemented by writing a function that accepts three arguments: `obj` (the object to compute the representation for), `push` (a function to be called with one or more primitives or objects to append to the representation for this object), and `recurse` (a function to be called to insert the representation for another object). Take a look at the implementations of the existing handlers in [`handlers.js`](src/handlers.js) for more details on how these could work.
 
 ### `memoizedFunction.original`
 
