@@ -1,2 +1,3 @@
-export { default as memoize } from './memoize.js'
-export { default as clear } from './clear.js'
+export { memoize } from './memoize.js'
+export { clear } from './clear.js'
+export { add, addCustom } from './add.js'

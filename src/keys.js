@@ -1,45 +1,23 @@
-import sortSymbols from './sortSymbols.js'
+import { handlers } from './handlers.js'
 
-let ARRAY = Symbol()
-let HOLE = Symbol()
-let OBJECT = Symbol()
-let REGEXP = Symbol()
-let DATE = Symbol()
-let BUFFER = Symbol()
-
-let array
+let array = []
+let push = array.push.bind(array)
 
 let recurse = obj => {
-	switch (typeof obj === 'object' && obj !== null && Object.getPrototypeOf(obj)) {
-		case Array.prototype:
-			array.push(ARRAY, obj.length)
-			for (let i = 0; i < obj.length; i++) i in obj ? recurse(obj[i]) : array.push(HOLE)
-			break
-		case Object.prototype: {
-			let temp = [
-				...Object.getOwnPropertyNames(obj).sort(),
-				...sortSymbols(Object.getOwnPropertySymbols(obj)),
-			]
-			array.push(OBJECT, temp.length, ...temp)
-			temp.forEach(key => recurse(obj[key]))
-			break
+	if (typeof obj === 'object' && obj !== null) {
+		let handler = handlers.get(Object.getPrototypeOf(obj))
+		if (handler) {
+			handler(obj, push, recurse)
+			return
 		}
-		case RegExp.prototype:
-			array.push(REGEXP, obj.toString())
-			break
-		case Date.prototype:
-			array.push(DATE, obj.getTime())
-			break
-		case Buffer.prototype:
-			array.push(BUFFER, obj.toString('binary'))
-			break
-		default:
-			array.push(obj)
 	}
+	push(obj)
 }
 
-export default args => {
-	array = []
-	args.forEach(recurse)
+export let keys = args => {
+	array.length = 0
+	for (let arg of args) {
+		recurse(arg)
+	}
 	return array
 }

@@ -1,3 +1,6 @@
 import { data } from './memoize.js'
 
-export default func => data.WeakMap && data.WeakMap.delete(func.original || func)
+export let clear = func => {
+	data.delete(func)
+	data.delete(func.original)
+}

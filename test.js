@@ -1,8 +1,7 @@
 let memor = require('.')
 let assert = require('assert')
 
-let calledCount = 0
-let func = () => ++calledCount
+let func = () => ({})
 let call = memor.memoize(func)
 
 assert.equal(call([]), call([]))
@@ -21,6 +20,14 @@ assert.notEqual(call([1, , 2]), call([1, 2, ,])) // eslint-disable-line no-spars
 
 assert.notEqual(call([1, , 2]), call([1, undefined, 2])) // eslint-disable-line no-sparse-arrays
 
+{
+	let a = []
+	let b = []
+	assert.equal(call(a), call(b))
+	b.x = 0
+	assert.notEqual(call(a), call(b))
+}
+
 assert.equal(call({}), call({}))
 
 {
@@ -36,6 +43,8 @@ assert.equal(call([{ a: 0 }]), call([{ a: 0 }]))
 assert.notEqual(call({}), call({ a: undefined }))
 
 assert.notEqual(call([[0, 0], [0]]), call([[0], [0, 0]]))
+
+assert.notEqual(call([[0, 0], [0]]), call([[0, 0, [0]]]))
 
 assert.equal(call({ a: 0, b: 1 }), call({ b: 1, a: 0 }))
 
@@ -90,11 +99,55 @@ assert.notEqual(call(null), call())
 
 assert.notEqual(call(true), call(true, undefined))
 
-assert.notEqual(call(), memor.memoize(() => ++calledCount)())
-
 assert.equal(call(), memor.memoize(func)())
 
-assert.notEqual(call(Object.create(null)), call(Object.create(null)))
+assert.equal(call(Object.create(null)), call(Object.create(null)))
+
+assert.notEqual(call(Object.create(null)), call({}))
+
+{
+	class Foo {}
+	memor.add(Foo)
+	let foo = new Foo()
+	let r1 = call(foo)
+	assert.notEqual(call({}), r1)
+	foo.bar = 0
+	let r2 = call(foo)
+	assert.notEqual(r1, r2)
+	foo = new Foo()
+	assert.equal(call(foo), r1)
+	foo.bar = 0
+	assert.equal(call(foo), r2)
+}
+
+{
+	class Bar {}
+	let sigil = {}
+	memor.addCustom(Bar, (obj, push, recurse) => {
+		push(sigil)
+		recurse(obj.baz)
+	})
+	let bar = new Bar()
+	let r1 = call(bar)
+	bar.quuz = 0
+	assert.equal(call(bar), r1)
+	bar.baz = 0
+	let r2 = call(bar)
+	assert.notEqual(r1, r2)
+	bar = new Bar()
+	assert.equal(call(bar), r1)
+	bar.baz = 0
+	assert.equal(call(bar), r2)
+}
+
+{
+	class Foo {}
+	class Bar {}
+	memor.add(Foo, Bar)
+	assert.equal(call(new Foo()), call(new Foo()))
+	assert.equal(call(new Bar()), call(new Bar()))
+	assert.notEqual(call(new Foo()), call(new Bar()))
+}
 
 assert.equal(call.original, func)
 
