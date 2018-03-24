@@ -1,6 +1,10 @@
-import { handlers, defaultHandler } from './handlers.js'
+import { handlers, withDefaultHandler } from './handlers.js'
 
-export let add = (...classes) => addCustom(...classes, defaultHandler)
+export let add = (...classes) => {
+	for (let Class of classes) {
+		withDefaultHandler.add(Class.prototype)
+	}
+}
 
 export let addCustom = (...classes) => {
 	let handler = classes.pop()
